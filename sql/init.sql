@@ -6,3 +6,6 @@ CREATE TABLE pages (
    parent_id INT,
    FOREIGN KEY (parent_id) REFERENCES pages(page_id)
 );
+
+INSERT INTO pages (title, parent_id) VALUES
+                                         ("home",NULL);
