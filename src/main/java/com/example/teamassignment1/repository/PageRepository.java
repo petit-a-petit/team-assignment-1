@@ -18,6 +18,20 @@ public class PageRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public List<String> findParentPageTitleByIdWithCte(Long currentPageId){
+        String sql = "WITH RECURSIVE PageHierarchy AS ( \n" +
+                "   SELECT page_id, title, parent_id FROM pages WHERE page_id = ? \n" + /* 최초실행 */
+                "   UNION ALL\n" +
+                "   SELECT p.page_id, p.title, p.parent_id FROM pages p \n" + /* 반복할 쿼리  */
+                "   INNER JOIN PageHierarchy ph ON ph.parent_id = p.page_id\n" + /* 반복한 쿼리에서 현재 페이지의 부모와 반복한 쿼리의 현재 페이지가 같아야 함 */
+                ")\n" +
+                "SELECT title FROM PageHierarchy;";
+
+        List<String> parentPageTitles = jdbcTemplate.queryForList(sql, String.class, currentPageId);
+
+        return parentPageTitles;
+    }
+
     public List<Long> findChildrenPageById(Page currentPage) {
         String sql = "SELECT page_id FROM pages WHERE parent_id = ?";
         List<Long> childrenPageIds = jdbcTemplate.queryForList(sql, Long.class, currentPage.getId());

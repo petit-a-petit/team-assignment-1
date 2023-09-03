@@ -15,6 +15,16 @@ public class PageService {
         this.pageRepository = pageRepository;
     }
 
+    public PageDto getPageByIdWithCte(Long id) {
+        Page pageEntity = pageRepository.getPageById(id);
+        List<String> parentList = pageRepository.findParentPageTitleByIdWithCte(pageEntity.getId());
+        List<Long> childrenList = pageRepository.findChildrenPageById(pageEntity);
+
+        PageDto response = new PageDto(pageEntity.getId(), pageEntity.getTitle(), parentList, childrenList);
+
+        return response;
+    }
+
     public PageDto getPageById(Long id) {
         Page pageEntity = pageRepository.getPageById(id);
         List<String> parentList = pageRepository.findParentPageTitleById(pageEntity);

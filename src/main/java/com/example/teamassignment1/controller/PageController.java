@@ -13,6 +13,13 @@ public class PageController {
         this.pageService = pageService;
     }
 
+    @GetMapping("/page/cte/{id}")
+    public PageDto getPageWithCte(@PathVariable Long id) {
+        PageDto page = pageService.getPageByIdWithCte(id);
+
+        return page;
+    }
+
     @GetMapping("/page/{id}")
     public PageDto getPage(@PathVariable Long id) {
         PageDto page = pageService.getPageById(id);
