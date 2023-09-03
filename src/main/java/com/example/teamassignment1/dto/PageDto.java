@@ -1,32 +1,29 @@
 package com.example.teamassignment1.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.example.teamassignment1.entity.Page;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PageDto {
     private long id;
     private String title;
     private List<String> parents;
     private List<Long> children;
 
-    public PageDto(long pageId, String title) {
-        this.id = pageId;
-        this.title = title;
-    }
-
-    public PageDto(){
-
-    }
-
-    public PageDto(Long id, String title, List<String> parentList, List<Long> childrenList) {
+    private PageDto(Long id, String title, List<String> parentList, List<Long> childrenList) {
         this.id = id;
         this.title = title;
         this.parents = parentList;
         this.children = childrenList;
+    }
+
+    public static PageDto createPageDto(Page page, List<String> parentList, List<Long> childrenList){
+        PageDto pageDto = new PageDto(page.getId(), page.getTitle(), parentList,childrenList);
+
+        return pageDto;
     }
 }
 

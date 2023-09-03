@@ -48,9 +48,7 @@ public class PageRepository {
         while (currentPage.getParentId() != 0) {
             parentPageTitle.add(currentPage.getTitle());
             currentPage = jdbcTemplate.queryForObject(sql, new Object[]{currentPage.getParentId()}, (rs, rowNum) -> {
-                Page page = new Page(rs.getLong("page_id"),
-                        rs.getString("title"),
-                        rs.getLong("parent_id"));
+                Page page = Page.from(rs);
 
                 return page;
             });
@@ -66,10 +64,7 @@ public class PageRepository {
     public Page getPageById(Long id) {
         String sql = "SELECT * FROM pages WHERE page_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
-            Page page = new Page(
-                    rs.getLong("page_id"),
-                    rs.getString("title"),
-                    rs.getLong("parent_id"));
+            Page page = Page.from(rs);
 
             return page;
         });

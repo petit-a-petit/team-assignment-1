@@ -20,7 +20,7 @@ public class PageService {
         List<String> parentList = pageRepository.findParentPageTitleByIdWithCte(pageEntity.getId());
         List<Long> childrenList = pageRepository.findChildrenPageById(pageEntity);
 
-        PageDto response = new PageDto(pageEntity.getId(), pageEntity.getTitle(), parentList, childrenList);
+        PageDto response = PageDto.createPageDto(pageEntity,parentList,childrenList);
 
         return response;
     }
@@ -30,7 +30,7 @@ public class PageService {
         List<String> parentList = pageRepository.findParentPageTitleById(pageEntity);
         List<Long> childrenList = pageRepository.findChildrenPageById(pageEntity);
 
-        PageDto response = new PageDto(pageEntity.getId(), pageEntity.getTitle(), parentList, childrenList);
+        PageDto response = PageDto.createPageDto(pageEntity,parentList,childrenList);
 
         return response;
     }
