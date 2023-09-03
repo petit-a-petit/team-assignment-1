@@ -20,7 +20,6 @@ public class PageService {
 		return PageResponse.CreateDto.builder()
 			.title(page.getTitle())
 			.content(page.getContent())
-			.createAt(page.getCreateAt())
 			.build();
 	}
 }

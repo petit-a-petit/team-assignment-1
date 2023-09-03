@@ -12,7 +12,7 @@ public class PageRepository {
 	private JdbcTemplate jdbcTemplate;
 
 	public void save(Page page) {
-		String sql = "INSERT INTO pages (title, content, create_at) VALUES (?, ?, ?)";
-		jdbcTemplate.update(sql, page.getTitle(), page.getContent(), page.getCreateAt());
+		String sql = "INSERT INTO pages (title, content) VALUES (?, ?)";
+		jdbcTemplate.update(sql, page.getTitle(), page.getContent());
 	}
 }

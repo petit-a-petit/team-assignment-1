@@ -14,7 +14,6 @@ public class PageResponse {
 	public static class CreateDto {
 		private String title;
 		private String content;
-		private LocalDateTime createAt;
 	}
 
 }
