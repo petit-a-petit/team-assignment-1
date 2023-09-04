@@ -30,7 +30,7 @@ public class Main {
 
                 Page page = new Page(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3));
 
-                List<Integer> subPages = new ArrayList<>();
+                List<Integer> subPages = getSubPages(connection, pageId, preparedStatement);
 
                 List<Integer> breadCrumbs = getBreadCrumbs(connection, pageId, resultSet);
 
@@ -59,6 +59,23 @@ public class Main {
         return DriverManager.getConnection(prop.getProperty("url"),
                 prop.getProperty("username"),
                 prop.getProperty("password"));
+    }
+
+    private static List<Integer> getSubPages(Connection connection, int pageId, PreparedStatement preparedStatement) throws SQLException {
+        List<Integer> subPages = new ArrayList<>();
+
+        PreparedStatement stmt1 = connection.prepareStatement("SELECT * FROM page WHERE parent_page_id = ?");
+        stmt1.setInt(1, pageId);
+        ResultSet rs1 = stmt1.executeQuery();
+
+        while(rs1.next()){
+            subPages.add(rs1.getInt(1));
+        }
+
+        stmt1.close();
+        rs1.close();
+
+        return subPages;
     }
 
     private static List<Integer> getBreadCrumbs(Connection connection, int pageId, ResultSet resultSet) throws SQLException {
