@@ -12,7 +12,6 @@ public class PageResponse {
 	public static class FindDto {
 		private String title;
 		private String content;
-		private Long parentPageId;
 		private String breadcrumbs;
 		private List<String> subPages;
 	}

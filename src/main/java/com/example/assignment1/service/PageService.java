@@ -45,7 +45,6 @@ public class PageService {
 		return PageResponse.FindDto.builder()
 			.title(page.getTitle())
 			.content(page.getContent())
-			.parentPageId(page.getParentPageId())
 			.breadcrumbs(page.getBreadcrumbs())
 			.subPages(pageRepository.findByParentPageId(page.getId()))
 			.build();
