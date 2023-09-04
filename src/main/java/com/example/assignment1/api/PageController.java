@@ -22,14 +22,14 @@ public class PageController {
 
 	@PostMapping()
 	public ResponseEntity<PageResponse.CreateResponse> createPage(@RequestBody PageRequest.CreateRequest createRequest) {
-		PageResponse.CreateResponse page = pageService.createPage(createRequest);
-		return new ResponseEntity<>(page, HttpStatus.CREATED);
+		PageResponse.CreateResponse createResponse = pageService.createPage(createRequest);
+		return new ResponseEntity<>(createResponse, HttpStatus.CREATED);
 	}
 
 	// 페이지 정보 조회 (브레드크럼, 서브페이지)
 	@GetMapping()
 	public ResponseEntity<PageResponse.FindResponse> getPageInfo(@RequestParam Long pageId) {
-		PageResponse.FindResponse pageResponse = pageService.getPageInfo(pageId);
-		return new ResponseEntity<>(pageResponse, HttpStatus.OK);
+		PageResponse.FindResponse findResponse = pageService.getPageInfo(pageId);
+		return new ResponseEntity<>(findResponse, HttpStatus.OK);
 	}
 }
