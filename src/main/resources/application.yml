@@ -1,0 +1,13 @@
+spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/schema.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/wanted-1?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: admin
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
