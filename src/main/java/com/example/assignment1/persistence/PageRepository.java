@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +20,11 @@ public class PageRepository {
 	private static final String JDBC_USERNAME = "admin";
 	private static final String JDBC_PASSWORD = "admin";
 
-	public void save(Page page) {
+	public Long save(Page page) {
 		try {
 			Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD);
 			String sql = "INSERT INTO pages (title, content, parent_page_id, breadcrumbs) VALUES (?, ?, ?, ?)";
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, page.getTitle());
 			pstmt.setString(2, page.getContent());
 			if (page.getParentPageId() != null) {
@@ -33,9 +34,18 @@ public class PageRepository {
 			}
 			pstmt.setString(4, page.getBreadcrumbs());
 			pstmt.executeUpdate();
+
+			// 자동 생성된 id 반환
+			ResultSet generatedKeys = pstmt.getGeneratedKeys();
+			if (generatedKeys.next()) {
+				return generatedKeys.getLong(1);
+			} else {
+				throw new SQLException("Failed to retrieve generated page ID.");
+			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
+		return null;
 	}
 
 	public Page findById(Long pageId) {

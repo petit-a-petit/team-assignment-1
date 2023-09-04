@@ -28,10 +28,10 @@ public class PageService {
 		}
 		newPage.updateBreadcrumbs(prefix + " / " + newPage.getTitle()); // 새 페이지의 브레드크럼 정보 설정
 
-		pageRepository.save(newPage);
+		Long pageId = pageRepository.save(newPage);
 
 		return PageResponse.CreateResponse.builder()
-			.id(newPage.getId())
+			.id(pageId)
 			.title(newPage.getTitle())
 			.content(newPage.getContent())
 			.breadcrumbs(newPage.getBreadcrumbs())
