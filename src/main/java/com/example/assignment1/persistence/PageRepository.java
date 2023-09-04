@@ -1,18 +1,59 @@
 package com.example.assignment1.persistence;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.assignment1.model.Page;
 
 @Repository
 public class PageRepository {
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private static final String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/wanted-1?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true";
+	private static final String JDBC_USERNAME = "admin";
+	private static final String JDBC_PASSWORD = "admin";
 
 	public void save(Page page) {
-		String sql = "INSERT INTO pages (title, content) VALUES (?, ?)";
-		jdbcTemplate.update(sql, page.getTitle(), page.getContent());
+		try {
+			Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD);
+			String sql = "INSERT INTO pages (title, content, parent_page_id, breadcrumbs) VALUES (?, ?, ?, ?)";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, page.getTitle());
+			pstmt.setString(2, page.getContent());
+			if (page.getParentPageId() != null) {
+				pstmt.setLong(3, page.getParentPageId());
+			} else {
+				pstmt.setNull(3, Types.BIGINT);
+			}
+			pstmt.setString(4, page.getBreadcrumbs());
+			pstmt.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public Page findById(Long pageId) {
+		try {
+			Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD);
+			String sql = "SELECT * FROM pages WHERE id = ?";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setLong(1, pageId);
+			ResultSet resultSet = pstmt.executeQuery();
+			Page page = new Page();
+			if (resultSet.next()) {
+				page.setTitle(resultSet.getString("title"));
+				page.setContent(resultSet.getString("content"));
+				page.setParentPageId(resultSet.getLong("parent_page_id"));
+				page.setBreadcrumbs(resultSet.getString("breadcrumbs"));
+			}
+			return page;
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
 	}
 }

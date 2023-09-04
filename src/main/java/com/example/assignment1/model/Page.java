@@ -1,27 +1,22 @@
 package com.example.assignment1.model;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class Page {
 	private Long id;
 	private String title;
 	private String content;
-	// private Long parentPageId;
-	// private List<Page> childPages;
-	// private Page parentPage;
+	private Long parentPageId;
+	private String breadcrumbs; // 현재 페이지 경로 (부모 페이지들)
 
-	@Builder
-	private Page(final String title, final String content) {
-		this.title = title;
-		this.content = content;
-	}
-
-	public static Page of(final String title, final String content) {
-		return Page.builder()
-			.title(title)
-			.content(content)
-			.build();
+	public void updateBreadcrumbs(String breadcrumb) {
+		if (breadcrumbs == null) {
+			breadcrumbs = breadcrumb;
+		} else {
+			breadcrumbs += " / " + breadcrumb;
+		}
 	}
 }

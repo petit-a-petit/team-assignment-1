@@ -1,11 +1,7 @@
 package com.example.assignment1.dto;
 
-import java.time.LocalDateTime;
-
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 public class PageResponse {
 
@@ -14,6 +10,10 @@ public class PageResponse {
 	public static class CreateDto {
 		private String title;
 		private String content;
+		private Long parentPageId;
+		private String breadcrumbs;
+		// private List<Page> childPages;
+		// private List<String> breadcrumbs = new ArrayList<>();
 	}
 
 }

@@ -12,6 +12,7 @@ public class PageRequest {
 	public static class CreateDto {
 		private String title;
 		private String content;
+		private Long parentPageId;
 	}
 
 }
