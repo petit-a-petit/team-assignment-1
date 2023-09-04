@@ -51,8 +51,8 @@ public class PageService {
 		List<String> subPages = pageRepository.findByParentPageId(page.getId());
 
 		return PageResponse.FindResponse.builder()
+			.id(page.getId())
 			.title(page.getTitle())
-			.content(page.getContent())
 			.breadcrumbs(page.getBreadcrumbs())
 			.subPages(subPages)
 			.build();

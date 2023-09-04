@@ -20,8 +20,8 @@ public class PageResponse {
 	@Getter
 	@Builder
 	public static class FindResponse {
+		private Long id;
 		private String title;
-		private String content;
 		private String breadcrumbs;
 		private List<String> subPages;
 	}

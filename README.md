@@ -50,10 +50,10 @@ Content-type : application/json
 #### Response
 ```json
 {
-  "id": 4,
-  "title": "D",
-  "content": "sss",
-  "breadcrumbs": " / A / B / D",
+  "id": 3,
+  "title": "C",
+  "content": "sample",
+  "breadcrumbs": " / A / B / C",
   "parentPageId": 2
 }
 ````
@@ -69,12 +69,12 @@ Content-type : application/json
 #### Response
 ```json
 {
-  "title": "B",
-  "content": "sss",
-  "breadcrumbs": " / A / B",
+  "id": 3,
+  "title": "C",
+  "breadcrumbs": " / A / B / C",
   "subPages": [
-    "C",
-    "D"
+    "D",
+    "E"
   ]
 }
 ````
