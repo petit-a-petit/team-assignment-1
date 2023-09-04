@@ -15,7 +15,7 @@ public class PageService {
 	private PageRepository pageRepository;
 
 	@Transactional
-	public void createPage(PageRequest.CreateDto createDto) {
+	public PageResponse.CreateDto createPage(PageRequest.CreateDto createDto) {
 		// 새로운 페이지 생성
 		Page newPage = new Page();
 		newPage.setTitle(createDto.getTitle());
@@ -33,6 +33,14 @@ public class PageService {
 
 		// 페이지 저장
 		pageRepository.save(newPage);
+
+		return PageResponse.CreateDto.builder()
+			.id(newPage.getId())
+			.title(newPage.getTitle())
+			.content(newPage.getContent())
+			.breadcrumbs(newPage.getBreadcrumbs())
+			.parentPageId(newPage.getParentPageId())
+			.build();
 	}
 
 	@Transactional
