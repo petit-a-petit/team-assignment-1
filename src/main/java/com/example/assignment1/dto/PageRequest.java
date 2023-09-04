@@ -9,7 +9,7 @@ public class PageRequest {
 	@Getter
 	@AllArgsConstructor
 	@NoArgsConstructor
-	public static class CreateDto {
+	public static class CreateRequest {
 		private String title;
 		private String content;
 		private Long parentPageId;

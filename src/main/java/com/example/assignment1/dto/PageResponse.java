@@ -9,7 +9,7 @@ public class PageResponse {
 
 	@Getter
 	@Builder
-	public static class CreateDto {
+	public static class CreateResponse {
 		private Long id;
 		private String title;
 		private String content;
@@ -19,7 +19,7 @@ public class PageResponse {
 
 	@Getter
 	@Builder
-	public static class FindDto {
+	public static class FindResponse {
 		private String title;
 		private String content;
 		private String breadcrumbs;

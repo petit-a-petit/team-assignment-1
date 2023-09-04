@@ -21,15 +21,15 @@ public class PageController {
 	private PageService pageService;
 
 	@PostMapping()
-	public ResponseEntity<PageResponse.CreateDto> createPage(@RequestBody PageRequest.CreateDto pageRequest) {
-		PageResponse.CreateDto page = pageService.createPage(pageRequest);
+	public ResponseEntity<PageResponse.CreateResponse> createPage(@RequestBody PageRequest.CreateRequest createRequest) {
+		PageResponse.CreateResponse page = pageService.createPage(createRequest);
 		return new ResponseEntity<>(page, HttpStatus.CREATED);
 	}
 
 	// 페이지 정보 조회 (브레드크럼, 서브페이지)
 	@GetMapping()
-	public ResponseEntity<PageResponse.FindDto> getPageInfo(@RequestParam Long pageId) {
-		PageResponse.FindDto pageResponse = pageService.getPageInfo(pageId);
+	public ResponseEntity<PageResponse.FindResponse> getPageInfo(@RequestParam Long pageId) {
+		PageResponse.FindResponse pageResponse = pageService.getPageInfo(pageId);
 		return new ResponseEntity<>(pageResponse, HttpStatus.OK);
 	}
 }

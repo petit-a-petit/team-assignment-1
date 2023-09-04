@@ -15,26 +15,22 @@ public class PageService {
 	private PageRepository pageRepository;
 
 	@Transactional
-	public PageResponse.CreateDto createPage(PageRequest.CreateDto createDto) {
-		// 새로운 페이지 생성
+	public PageResponse.CreateResponse createPage(PageRequest.CreateRequest createRequest) {
 		Page newPage = new Page();
-		newPage.setTitle(createDto.getTitle());
-		newPage.setContent(createDto.getContent());
+		newPage.setTitle(createRequest.getTitle());
+		newPage.setContent(createRequest.getContent());
 
-		// 부모 페이지가 있는 경우
 		String prefix = "";
-		if (createDto.getParentPageId() != null) {
-			newPage.setParentPageId(createDto.getParentPageId());
-			Page parentPage = pageRepository.findById(createDto.getParentPageId());
+		if (createRequest.getParentPageId() != null) {
+			newPage.setParentPageId(createRequest.getParentPageId());
+			Page parentPage = pageRepository.findById(createRequest.getParentPageId());
 			prefix = parentPage.getBreadcrumbs(); // 부모 페이지의 브레드크럼 정보 가져오기
 		}
-		// 새 페이지의 브레드크럼 정보 설정
-		newPage.updateBreadcrumbs(prefix + " / " + newPage.getTitle());
+		newPage.updateBreadcrumbs(prefix + " / " + newPage.getTitle()); // 새 페이지의 브레드크럼 정보 설정
 
-		// 페이지 저장
 		pageRepository.save(newPage);
 
-		return PageResponse.CreateDto.builder()
+		return PageResponse.CreateResponse.builder()
 			.id(newPage.getId())
 			.title(newPage.getTitle())
 			.content(newPage.getContent())
@@ -44,13 +40,13 @@ public class PageService {
 	}
 
 	@Transactional
-	public PageResponse.FindDto getPageInfo(Long pageId) {
+	public PageResponse.FindResponse getPageInfo(Long pageId) {
 		Page page = pageRepository.findById(pageId);
 		if (page == null) {
 			throw new RuntimeException("Page not found with ID: " + pageId);
 		}
 
-		return PageResponse.FindDto.builder()
+		return PageResponse.FindResponse.builder()
 			.title(page.getTitle())
 			.content(page.getContent())
 			.breadcrumbs(page.getBreadcrumbs())
