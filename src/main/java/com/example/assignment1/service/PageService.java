@@ -36,17 +36,18 @@ public class PageService {
 	}
 
 	@Transactional
-	public PageResponse.CreateDto getPageInfo(Long pageId) {
+	public PageResponse.FindDto getPageInfo(Long pageId) {
 		Page page = pageRepository.findById(pageId);
 		if (page == null) {
 			throw new RuntimeException("Page not found with ID: " + pageId);
 		}
 
-		return PageResponse.CreateDto.builder()
+		return PageResponse.FindDto.builder()
 			.title(page.getTitle())
 			.content(page.getContent())
 			.parentPageId(page.getParentPageId())
 			.breadcrumbs(page.getBreadcrumbs())
+			.subPages(pageRepository.findByParentPageId(page.getId()))
 			.build();
 	}
 

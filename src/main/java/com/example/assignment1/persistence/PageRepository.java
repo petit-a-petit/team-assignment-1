@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -45,6 +47,7 @@ public class PageRepository {
 			ResultSet resultSet = pstmt.executeQuery();
 			Page page = new Page();
 			if (resultSet.next()) {
+				page.setId(resultSet.getLong("id"));
 				page.setTitle(resultSet.getString("title"));
 				page.setContent(resultSet.getString("content"));
 				page.setParentPageId(resultSet.getLong("parent_page_id"));
@@ -55,5 +58,27 @@ public class PageRepository {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+
+	public List<String> findByParentPageId(Long parentPageId) {
+		List<String> titles = new ArrayList<>();
+		try {
+			Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD);
+			String sql = "SELECT title FROM pages WHERE parent_page_id = ?";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setLong(1, parentPageId);
+			ResultSet resultSet = pstmt.executeQuery();
+
+			while (resultSet.next()) {
+				titles.add(resultSet.getString("title"));
+			}
+
+			resultSet.close();
+			pstmt.close();
+			connection.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return titles;
 	}
 }
