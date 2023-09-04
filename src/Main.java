@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Stack;
 
 public class Main {
 
@@ -31,7 +32,7 @@ public class Main {
 
                 List<Integer> subPages = new ArrayList<>();
 
-                List<Integer> breadCrumbs = new ArrayList<>();
+                List<Integer> breadCrumbs = getBreadCrumbs(connection, pageId, resultSet);
 
                 Response response = new Response(200, page, subPages, breadCrumbs);
 
@@ -58,6 +59,31 @@ public class Main {
         return DriverManager.getConnection(prop.getProperty("url"),
                 prop.getProperty("username"),
                 prop.getProperty("password"));
+    }
+
+    private static List<Integer> getBreadCrumbs(Connection connection, int pageId, ResultSet resultSet) throws SQLException {
+        //3. bread crumbs 확인
+        int parentId = resultSet.getInt(4);
+        List<Integer> breadCrumbs = new ArrayList<>();
+        Stack<Integer> stack = new Stack<>();
+        stack.add(pageId);
+        PreparedStatement stmt2 = connection.prepareStatement("SELECT * FROM PAGE WHERE ID = ?");
+        while(true){
+            stmt2.setInt(1, parentId);
+            ResultSet rs2 = stmt2.executeQuery();
+            if(rs2.next()){
+                stack.push(rs2.getInt(1));
+                parentId = rs2.getInt(4);
+            }else{
+                while(!stack.isEmpty()){
+                    breadCrumbs.add(stack.pop());
+                }
+                break;
+            }
+            rs2.close();
+        }
+        stmt2.close();
+        return breadCrumbs;
     }
 
     private static void printResult(Response response) {
