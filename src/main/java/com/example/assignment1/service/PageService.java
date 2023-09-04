@@ -1,5 +1,7 @@
 package com.example.assignment1.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,11 +48,13 @@ public class PageService {
 			throw new RuntimeException("Page not found with ID: " + pageId);
 		}
 
+		List<String> subPages = pageRepository.findByParentPageId(page.getId());
+
 		return PageResponse.FindResponse.builder()
 			.title(page.getTitle())
 			.content(page.getContent())
 			.breadcrumbs(page.getBreadcrumbs())
-			.subPages(pageRepository.findByParentPageId(page.getId()))
+			.subPages(subPages)
 			.build();
 	}
 
