@@ -1,30 +1,30 @@
 # [팀 과제] 노션에서 브로드 크럼스(Breadcrumbs) 만들기
 
-
-## 목표
+## 1. 목표
 노션과 유사한 간단한 페이지 관리 API를 구현해주세요.
 
-## 요구사항
+## 2. 요구사항
 - 각 페이지는 제목, 컨텐츠, 그리고 서브 페이지를 가질 수 있습니다. 
 - 특정 페이지에 대한 브레드크럼(Breadcrumbs) 정보도 반환해야 합니다.
 - orm 을 사용하지 않고 raw 쿼리만 사용합니다.
 - depth 가 같은 서브페이지가 여러 개일 수 있습니다.
 
 ### 브레드크럼(Breadcrumbs)이란?
-브레드 크럼이란 빵 부스러기로 헨젤과 그레텔에서 따온 용어로 현재 페이지의 위치를 시각적으로 나타내는 경로 또는 계층 구조의 탐색 메뉴를 의미합니다.
+브레드크럼이란 빵 부스러기로 헨젤과 그레텔에서 따온 용어로, 현재 페이지의 위치를 시각적으로 나타내는 경로 또는 계층 구조의 탐색 메뉴를 의미합니다. <br><br>
 ![스크린샷 2023-09-04 오후 4 29 16](https://github.com/minju412/jenkins-test/assets/59405576/16d5307d-92f6-4450-935b-3fcc2c386c0b)
 
-
-## ERD
+## 3. ERD
 ![스크린샷 2023-09-04 오후 4 56 44](https://github.com/minju412/jenkins-test/assets/59405576/77c5c3cf-a40e-4d61-8507-72ef4efda990)
 
 
-## 과제 설명
-- ”왜 이 구조가 최선인지?” 등
+## 4. 과제 설명
+- 왜 이 구조가 최선일까?
+  - 각 페이지(`Page`)는 문자열 타입의 브레드크럼을 가지고 있습니다. 
+  - 새로운 페이지(`newPage`)가 생성될 때, 부모 페이지(`parentPage`)의 브레드크럼에 자신(`newPage.getTitle()`)을 누적하여 브레드크럼 문자열을 갱신합니다.
+  - 새로운 페이지를 생성할 때마다 모든 상위 페이지를 조회할 필요가 없으므로 효율적입니다.
 
 
-
-## API 명세 (request/response 포함)
+## 5. API 명세 (request/response 포함)
 ### 1️⃣ 페이지 생성
 ```javascript
 POST /pages
@@ -36,8 +36,8 @@ Content-type : application/json
 #### Request Body
 ```json
 {
-  "title": "D",
-  "content": "sss",
+  "title": "C",
+  "content": "sample",
   "parentPageId" : 2
 }
 ```
@@ -79,7 +79,7 @@ Content-type : application/json
 }
 ````
 
-## Team Rule
+## 6. Team Rule
 ### 1. Git Commit
 커밋 메시지는 header 뿐만 아니라 body까지 상세히 작성합니다.
 ![image](https://github.com/petit-a-petit/team-assignment-1/assets/139187207/f7c77232-cab1-4b5c-a85a-96f12c703cf9)
