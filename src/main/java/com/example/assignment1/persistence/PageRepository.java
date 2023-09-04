@@ -55,15 +55,15 @@ public class PageRepository {
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setLong(1, pageId);
 			ResultSet resultSet = pstmt.executeQuery();
-			Page page = new Page();
 			if (resultSet.next()) {
-				page.setId(resultSet.getLong("id"));
-				page.setTitle(resultSet.getString("title"));
-				page.setContent(resultSet.getString("content"));
-				page.setParentPageId(resultSet.getLong("parent_page_id"));
-				page.setBreadcrumbs(resultSet.getString("breadcrumbs"));
+				return Page.builder()
+					.id(resultSet.getLong("id"))
+					.title(resultSet.getString("title"))
+					.content(resultSet.getString("content"))
+					.parentPageId(resultSet.getLong("parent_page_id"))
+					.breadcrumbs(resultSet.getString("breadcrumbs"))
+					.build();
 			}
-			return page;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}

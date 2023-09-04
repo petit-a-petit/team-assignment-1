@@ -1,10 +1,10 @@
 package com.example.assignment1.model;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 public class Page {
 	private Long id;
 	private String title;
@@ -18,5 +18,9 @@ public class Page {
 		} else {
 			breadcrumbs += " / " + breadcrumb;
 		}
+	}
+
+	public void updateParentPageId(Long parentPageId) {
+		this.parentPageId = parentPageId;
 	}
 }

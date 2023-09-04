@@ -18,13 +18,14 @@ public class PageService {
 
 	@Transactional
 	public PageResponse.CreateResponse createPage(PageRequest.CreateRequest createRequest) {
-		Page newPage = new Page();
-		newPage.setTitle(createRequest.getTitle());
-		newPage.setContent(createRequest.getContent());
+		Page newPage = Page.builder()
+			.title(createRequest.getTitle())
+			.content(createRequest.getContent())
+			.build();
 
 		String prefix = "";
 		if (createRequest.getParentPageId() != null) {
-			newPage.setParentPageId(createRequest.getParentPageId());
+			newPage.updateParentPageId(createRequest.getParentPageId());
 			Page parentPage = pageRepository.findById(createRequest.getParentPageId());
 			prefix = parentPage.getBreadcrumbs(); // 부모 페이지의 브레드크럼 정보 가져오기
 		}
